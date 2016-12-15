@@ -6,6 +6,10 @@ defmodule Player do
     {:reply, hand, hand}
   end
 
+  def handle_call(:remove_top_card, _from, [ top_card | rest_of_hand ]) do
+    {:reply, top_card, rest_of_hand}
+  end
+
   def handle_cast(:remove_top_card, [ _top_card | rest_of_hand ]) do
     {:noreply, rest_of_hand}
   end

@@ -21,5 +21,18 @@ defmodule LoveletterTest do
     assert [8,1,1] == Loveletter.get_player_hand( pid )
   end
 
+  #game tests
+  test "can setup deck" do
+    deck_id = Loveletter.start_player( [1,1,1,1,1,2,2,3,3,4,4,5,6,7,8] )
+    assert [1,1,1,1,1,2,2,3,3,4,4,5,6,7,8] == Loveletter.get_player_hand( deck_id )
+  end
+
+  test "player can take card from deck" do
+    player_id = Loveletter.start_player( [] )
+    deck_id = Loveletter.start_player( [1,1,1,1,1,2,2,3,3,4,4,5,6,7,8] )
+    Loveletter.move_card(deck_id, player_id)
+    assert [1] == Loveletter.get_player_hand( player_id )
+  end
+
 
 end
