@@ -10,6 +10,11 @@ defmodule Player do
     {:reply, top_card, rest_of_hand}
   end
 
+  def handle_call({:get_card, card}, _from, hand) do
+    list_with_card_removed = List.delete(hand, card)
+    {:reply, card, list_with_card_removed}
+  end
+
   def handle_cast(:remove_top_card, [ _top_card | rest_of_hand ]) do
     {:noreply, rest_of_hand}
   end
