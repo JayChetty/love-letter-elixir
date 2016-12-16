@@ -18,4 +18,8 @@ defmodule Player do
     { :noreply, [ card | hand ] }
   end
 
+  def handle_cast( :shuffle_cards, hand) do
+    { :noreply, Enum.shuffle( hand ) }
+  end
+
 end
