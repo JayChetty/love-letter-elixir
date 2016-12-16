@@ -40,14 +40,21 @@ defmodule Runner do
     show_cards(player_one_id, "Player One")
     show_cards(player_two_id, "Player Two")
 
-    discard_pile = Loveletter.start_player( [] )
+    discard_id = Loveletter.start_player( [] )
 
     IO.gets("Player One Pick Up")
     Loveletter.move_card(deck_id, player_one_id)
     show_cards(player_one_id, "Player One")
-    IO.puts("Play card ( Enter Number )")
-    
-    Loveletter.move_card(deck_id, player_two_id)
+
+    IO.puts("Place Card")
+    {card_to_place, _ } = IO.gets("Play card ( Enter Number )") |> Integer.parse
+
+    IO.puts("Placeing Card #{ inspect card_to_place }")
+    Loveletter.move_card(player_one_id, discard_id, card_to_place)
+
+    show_cards(deck_id, "Deck")
+    show_cards(player_one_id, "Player One")
+    show_cards(player_two_id, "Player Two")
 
 
 

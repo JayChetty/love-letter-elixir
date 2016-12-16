@@ -24,9 +24,24 @@ defmodule LoveletterTest do
   test "moves card by id" do
     did = Loveletter.start_player( [1,2] )
     pid = Loveletter.start_player( [] )
-    card = Loveletter.move_card( did, pid, 2 )
+    Loveletter.move_card( did, pid, 2 )
     assert [1] == Loveletter.get_player_hand( did )
     assert [2] == Loveletter.get_player_hand( pid )
+  end
+
+  test "wont move card if doesn't exist" do
+    did = Loveletter.start_player( [1,2] )
+    pid = Loveletter.start_player( [] )
+    result = Loveletter.move_card( did, pid, 7 )
+    assert :no_card == result
+  end
+
+  test "doesnt change state if card doesn't exist" do
+    did = Loveletter.start_player( [1,2] )
+    pid = Loveletter.start_player( [] )
+    Loveletter.move_card( did, pid, 7 )
+    assert [1,2] == Loveletter.get_player_hand( did )
+    assert [] == Loveletter.get_player_hand( pid )
   end
 
   #game tests

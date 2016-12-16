@@ -13,8 +13,13 @@ defmodule Loveletter do
     GenServer.cast( pid, :remove_top_card )
   end
 
+  def add_card(_pid, nil) do
+    :no_card
+  end
+
   def add_card(pid, card) do
     GenServer.cast( pid, { :add_card, card } )
+    :ok
   end
 
   def move_card( from, to ) do
@@ -24,7 +29,7 @@ defmodule Loveletter do
 
   def move_card( from, to, card_number ) do
     card = GenServer.call( from, { :get_card, card_number } )
-    GenServer.cast( to, { :add_card, card_number } )
+    add_card(to, card)
   end
 
   def shuffle_cards( pid ) do
