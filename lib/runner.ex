@@ -21,15 +21,17 @@ defmodule Runner do
   end
 
   def start(_type, _args) do
-    IO.puts("Love Leter")
+    IO.puts("Love Letter")
 
-    {number_of_players,_} = IO.gets("Enter Number of Players") |> Integer.parse
+    {number_of_players,_} = IO.gets("Enter Number of Players ") |> Integer.parse
 
     players = Enum.map( 1..number_of_players, fn(number)->
       %{name: "Player #{number}", id: Loveletter.start_player( [] )}
     end)
 
-    deck_id = Loveletter.start_player( [1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8] )
+    # deck_id = Loveletter.start_player( [1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8] )
+    deck_id = Loveletter.start_player( [1,1,7,8] )
+
 
     IO.puts("Shuffling")
     Loveletter.shuffle_cards( deck_id )
@@ -42,12 +44,27 @@ defmodule Runner do
 
     discard_id = Loveletter.start_player( [] )
 
-    Enum.each(players, fn(player)->
-      play_turn(deck_id, discard_id, player)
-    end)
 
-    #because
+    deck = Loveletter.get_player_hand( deck_id )
+    play_turns(deck, deck_id, discard_id, players)
+
+
     Task.start(fn -> :timer.sleep(1); IO.puts("done sleeping") end)
+  end
+
+  def play_turns([], deck_id, discard_id, players, _player_index) do
+    IO.puts("GAME IS OVER")
+    Enum.each(players, fn(player)->
+      show_cards(player.id, player.name)
+    end)
+  end
+  #
+  def play_turns(deck, deck_id, discard_id, players, player_index \\ 0) do
+    play_turn(  deck_id, discard_id, Enum.at( players, player_index ) )
+    updated_deck = Loveletter.get_player_hand( deck_id )
+    next_player_index = rem(player_index + 1, Enum.count(players) )
+    IO.puts("Updated deck #{ inspect updated_deck }")
+    play_turns( updated_deck, deck_id, discard_id, players, next_player_index )
   end
 
   def play_turn( deck_id, discard_id, player ) do
@@ -58,10 +75,9 @@ defmodule Runner do
   end
 
   def place_card(player, discard_id) do
-    IO.puts("Place Card")
     {card_to_place, _ } = IO.gets("Play card ( Enter Number )") |> Integer.parse
 
-    IO.puts("Placeing Card #{ inspect card_to_place }")
+    IO.puts("Playing Card #{ inspect card_to_place }")
     result = Loveletter.move_card(player.id, discard_id, card_to_place)
 
     case result do
@@ -71,8 +87,6 @@ defmodule Runner do
         IO.puts("You don't have that card my friend")
         place_card(player, discard_id)
     end
-
-    show_cards(player.id, "Player One")
   end
 
   def show_cards(pid, holder_name) do
