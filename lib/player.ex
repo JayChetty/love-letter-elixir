@@ -27,9 +27,6 @@ defmodule Player do
   end
 
 
-
-
-
   def handle_cast(:remove_top_card, [ _top_card | rest_of_hand ]) do
     {:noreply, rest_of_hand}
   end

@@ -75,7 +75,7 @@ defmodule Runner do
   end
 
   def place_card(player, discard_id) do
-    {card_to_place, _ } = IO.gets("Play card ( Enter Number )") |> Integer.parse
+    {card_to_place, :ok } = IO.gets("Play card ( Enter Number )") |> Integer.parse
 
     IO.puts("Playing Card #{ inspect card_to_place }")
     result = Loveletter.move_card(player.id, discard_id, card_to_place)

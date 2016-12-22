@@ -1,24 +1,9 @@
 # Loveletter
 
-**TODO: Add description**
+Experimenting with GenServer for a simple version of the LoveLetter card game at Edinburgh Meetup.
 
-## Installation
+###Run Tests
+  mix test --no-start
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
-
-  1. Add `loveletter` to your list of dependencies in `mix.exs`:
-
-    ```elixir
-    def deps do
-      [{:loveletter, "~> 0.1.0"}]
-    end
-    ```
-
-  2. Ensure `loveletter` is started before your application:
-
-    ```elixir
-    def application do
-      [applications: [:loveletter]]
-    end
-    ```
-
+###Start CLI
+  mix run
